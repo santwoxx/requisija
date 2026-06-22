@@ -1,0 +1,6 @@
+{
+  "name": "RequisiJá - Sistema de Requisições",
+  "description": "Sistema Whitelabel inteligente para processamento e controle de requisições de compras e insumos da WA FORT - Segurança Eletrônica. Permite a extração automática por texto ou foto de orçamentos, edição rápida de erros e faturamento via WhatsApp ou PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

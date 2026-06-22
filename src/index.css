@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand-blue-950: #041221;
+  --color-brand-blue-900: #08213b;
+  --color-brand-blue-800: #0B3C5D;
+  --color-brand-blue-700: #14598c;
+  --color-brand-blue-600: #1D70B8;
+  --color-brand-blue-100: #eef5fc;
+  --color-brand-blue-50: #f4fafe;
+  
+  --color-brand-gold-400: #F3E5AB;
+  --color-brand-gold-500: #D4AF37;
+  --color-brand-gold-600: #AA8B2C;
+  --color-brand-gold-700: #8C6F12;
+}
+
+/* Print optimizations for printing formal requisitions */
+@media print {
+  /* Hide all UI elements except the special element with id print-area */
+  body * {
+    visibility: hidden;
+  }
+  #print-area, #print-area * {
+    visibility: visible;
+  }
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm; /* standard A4 width */
+    height: auto;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  /* Preserve backgrounds on print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
