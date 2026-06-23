@@ -1,5 +1,5 @@
 import { Requisition } from '../types';
-import { ShieldCheck, Calendar, FileText, BadgeAlert, Coins } from 'lucide-react';
+import { ShieldCheck, Calendar, FileText, BadgeAlert, Coins, Paperclip } from 'lucide-react';
 
 interface PrintPreviewProps {
   requisition: Requisition;
@@ -200,22 +200,49 @@ export default function PrintPreview({ requisition }: PrintPreviewProps) {
         </div>
       )}
 
+      {/* Attachments Section */}
+      {requisition.attachments && requisition.attachments.length > 0 && (
+        <div className="mb-8">
+          <h4 className="text-xs uppercase tracking-wider font-semibold text-slate-500 mb-2 flex items-center gap-1.5 border-b border-slate-100 pb-1">
+            <Paperclip className="w-3.5 h-3.5 text-slate-400" />
+            Anexos Vinculados ({requisition.attachments.length})
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {requisition.attachments.map((att) => (
+              <div key={att.id} className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-slate-50/50">
+                <div className="w-8 h-8 rounded bg-white border border-slate-200 flex items-center justify-center overflow-hidden shrink-0">
+                  {att.type.startsWith('image/') ? (
+                    <img src={att.content} alt={att.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <Paperclip className="w-4 h-4 text-slate-400" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-slate-700 truncate">{att.name}</p>
+                  <p className="text-[9px] text-slate-400 uppercase">{att.type.split('/')[1]}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Signature blocks (Essential for official paper flows) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-12 mt-12 border-t border-slate-100/90 text-center">
         <div className="flex flex-col items-center">
           <div className="w-5/6 border-b border-dashed border-slate-300 h-8" />
-          <p className="text-xs font-bold text-slate-700 mt-2">{requisition.requesterName || 'Solicitante'}</p>
-          <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Assinatura do Emissor</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="w-5/6 border-b border-dashed border-slate-300 h-8" />
-          <p className="text-xs font-bold text-slate-700 mt-2">Responsável Setorial</p>
-          <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Visto / Gestor da Obra</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="w-5/6 border-b border-dashed border-slate-300 h-8" />
           <p className="text-xs font-bold text-slate-700 mt-2">Almoxarifado / Compras</p>
           <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Autorização {companyName}</p>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="w-5/6 border-b border-dashed border-slate-300 h-8" />
+          <p className="text-xs font-bold text-slate-700 mt-2">Financeiro</p>
+          <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Validação</p>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="w-5/6 border-b border-dashed border-slate-300 h-8" />
+          <p className="text-xs font-bold text-slate-700 mt-2">Gerencial (Opcional)</p>
+          <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Aprovação Final</p>
         </div>
       </div>
 

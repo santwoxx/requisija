@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Requisition, RequisitionItem, HistoryRecord } from '../types';
+import { Requisition, RequisitionItem, HistoryRecord, Attachment } from '../types';
 import { 
   Plus, 
   Trash2, 
@@ -13,7 +13,9 @@ import {
   CreditCard,
   Search,
   Sparkles,
-  X
+  X,
+  Paperclip,
+  Upload
 } from 'lucide-react';
 
 interface RequisitionFormProps {
@@ -81,6 +83,48 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
     onChange({
       ...requisition,
       items: updatedItems,
+    });
+  };
+
+  // Handle Attachments
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    
+    Array.from(e.target.files).forEach((file) => {
+      const maxSize = 5 * 1024 * 1024; // 5 MB limit per attachment
+      if (file.size > maxSize) {
+        alert(`O arquivo ${file.name} excede o limite de tamanho permitido de 5MB.`);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          const newAttachment: Attachment = {
+            id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9),
+            name: file.name,
+            type: file.type,
+            content: event.target.result as string,
+          };
+          
+          onChange({
+            ...requisition,
+            attachments: [...(requisition.attachments || []), newAttachment],
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    
+    // Clear input
+    e.target.value = '';
+  };
+
+  const handleRemoveAttachment = (attachmentId: string) => {
+    const updatedAttachments = (requisition.attachments || []).filter((att) => att.id !== attachmentId);
+    onChange({
+      ...requisition,
+      attachments: updatedAttachments,
     });
   };
 
@@ -582,6 +626,60 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
             value={requisition.observationsToApprover}
             onChange={(e) => handleMetaChange('observationsToApprover', e.target.value)}
           />
+        </div>
+
+        {/* Attachments Section */}
+        <div className="border-t border-slate-100 pt-5">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="text-sm font-bold text-brand-blue-800 flex items-center gap-1.5 uppercase tracking-wide">
+              <Paperclip className="w-4 h-4 text-brand-gold-500" />
+              Anexos e Documentos Comprobatórios
+            </h4>
+            
+            <label className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-brand-blue-800 bg-brand-blue-50 hover:bg-brand-blue-100 border border-brand-blue-200 rounded-lg transition-all cursor-pointer">
+              <Upload className="w-3.5 h-3.5 text-brand-gold-550" />
+              Anexar Arquivo
+              <input 
+                type="file" 
+                multiple 
+                className="hidden" 
+                accept="image/*,application/pdf"
+                onChange={handleFileUpload} 
+              />
+            </label>
+          </div>
+
+          {(requisition.attachments && requisition.attachments.length > 0) ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              {requisition.attachments.map((att) => (
+                <div key={att.id} className="relative flex items-center gap-2 p-2 border border-slate-200 rounded-lg bg-slate-50 group">
+                  <div className="w-10 h-10 rounded bg-white border border-slate-200 flex items-center justify-center overflow-hidden shrink-0">
+                    {att.type.startsWith('image/') ? (
+                      <img src={att.content} alt={att.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <Paperclip className="w-5 h-5 text-slate-400" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-slate-700 truncate" title={att.name}>{att.name}</p>
+                    <p className="text-[10px] text-slate-400 uppercase">{att.type.split('/')[1]}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveAttachment(att.id)}
+                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-100 border border-red-200 text-red-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Remover anexo"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+             <div className="text-xs text-slate-400 italic bg-slate-50 p-4 rounded-lg text-center border border-dashed border-slate-200">
+               Nenhum anexo. Adicione fotos de orçamentos, requisições antigas ou PDFs.
+             </div>
+          )}
         </div>
 
       </div>

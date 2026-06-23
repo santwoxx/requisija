@@ -6,6 +6,13 @@ export interface RequisitionItem {
   estimatedUnitPrice: number;
 }
 
+export interface Attachment {
+  id: string;
+  name: string;
+  type: string; // MIME type (e.g., 'image/png', 'application/pdf')
+  content: string; // Base64 encoded string
+}
+
 export interface Requisition {
   id: string;
   requisitionNumber: string; // formatted identifier e.g. WA-2026-0032
@@ -21,6 +28,7 @@ export interface Requisition {
   companySub?: string;  // corporate activity / tagline
   companyCnpj?: string; // corporate registration number
   paymentTerms?: string; // Preferred payment structure (ex: Boleto 30 dias)
+  attachments?: Attachment[]; // Optional attachments for extra context/history
 }
 
 export interface CompanySettings {
