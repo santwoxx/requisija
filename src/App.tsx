@@ -21,7 +21,8 @@ import {
   Download,
   Save,
   Check,
-  Pencil
+  Pencil,
+  Loader2
 } from 'lucide-react';
 import { Requisition, HistoryRecord } from './types';
 import RequisitionForm from './components/RequisitionForm';
@@ -71,6 +72,15 @@ export default function App() {
   const [analyzing, setAnalyzing] = useState(false);
   const [activeTab, setActiveTab] = useState<'form' | 'whatsapp' | 'history'>('form');
   const [successAnimation, setSuccessAnimation] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  useEffect(() => {
+    // Hide the loading screen after 10 seconds
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
   
   // Create an initial empty requisition
   const createEmptyRequisition = (): Requisition => {
@@ -613,6 +623,42 @@ Lista de Materiais de Segurança de Alta Performance:
       return updated;
     });
   };
+
+  if (isInitialLoading) {
+    return (
+      <div className="fixed inset-0 bg-brand-blue-950 flex flex-col items-center justify-center z-[100] animate-fadeIn font-sans">
+        <div className="w-24 h-24 md:w-32 md:h-32 bg-white flex items-center justify-center rounded-2xl shadow-[0_0_60px_rgba(234,179,8,0.2)] p-2 border border-brand-gold-500/50 mb-8 animate-pulse">
+          <img 
+            src="https://i.ibb.co/C32GVNqh/logo.webp" 
+            alt="WA FORT Logo" 
+            className="object-contain w-full h-full" 
+            referrerPolicy="no-referrer"
+          />
+        </div>
+        
+        <h1 className="text-3xl md:text-5xl font-black text-white tracking-wider flex items-center gap-1.5 leading-none mb-3">
+          REQUISI<span className="text-brand-gold-500 font-bold">JÁ</span>
+        </h1>
+        <p className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-semibold text-brand-gold-400 mb-12 text-center px-4">
+          Sistema Operacional WA Fort
+        </p>
+
+        <div className="flex flex-col items-center gap-4 mt-8">
+          <Loader2 className="w-10 h-10 text-brand-gold-500 animate-spin" />
+          <p className="text-xs text-brand-blue-300 font-mono tracking-widest uppercase animate-pulse">
+            Carregando Módulos e Histórico...
+          </p>
+        </div>
+
+        <button 
+          onClick={() => setIsInitialLoading(false)}
+          className="absolute bottom-10 text-[10px] text-brand-blue-500 hover:text-brand-gold-400 transition-colors uppercase tracking-widest font-bold px-4 py-2 border border-brand-blue-800 rounded-lg hover:border-brand-gold-500/50"
+        >
+          Pular (Acessar Imediatamente)
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800">
