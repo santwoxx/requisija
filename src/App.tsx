@@ -1420,14 +1420,14 @@ Lista de Materiais de Segurança de Alta Performance:
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-3 px-6 md:px-12 text-[10px] uppercase font-bold text-slate-400 tracking-wider flex flex-col sm:flex-row items-center justify-between gap-2.5 shrink-0">
-        <p>&copy; {new Date().getFullYear()} REQUISIJA &bull; SOLUÇÕES INTELIGENTES S.A.</p>
+      <footer className="print:hidden bg-white border-t border-slate-200 py-3 px-6 md:px-12 text-[10px] uppercase font-bold text-slate-400 tracking-wider flex flex-col sm:flex-row items-center justify-between gap-2.5 shrink-0">
+        <p>&copy; {new Date().getFullYear()} REQUISIJA &bull; Desenvolvido por Natan Marinho.</p>
         <div className="flex gap-4">
           <span className="flex items-center gap-1 text-emerald-600">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
             SISTEMA OPERACIONAL ATIVO
           </span>
-          <span>DISTRIBUIDOR WHITELABEL V2.5</span>
+          <span>Todos os direitos reservados</span>
         </div>
       </footer>
 
