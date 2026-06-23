@@ -650,12 +650,6 @@ Lista de Materiais de Segurança de Alta Performance:
           </p>
         </div>
 
-        <button 
-          onClick={() => setIsInitialLoading(false)}
-          className="absolute bottom-10 text-[10px] text-brand-blue-500 hover:text-brand-gold-400 transition-colors uppercase tracking-widest font-bold px-4 py-2 border border-brand-blue-800 rounded-lg hover:border-brand-gold-500/50"
-        >
-          Pular (Acessar Imediatamente)
-        </button>
       </div>
     );
   }
