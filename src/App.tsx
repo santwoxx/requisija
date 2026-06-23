@@ -645,7 +645,7 @@ Lista de Materiais de Segurança de Alta Performance:
 
         <div className="flex flex-col items-center gap-4 mt-8">
           <Loader2 className="w-10 h-10 text-brand-gold-500 animate-spin" />
-          <p className="text-xs text-brand-blue-300 font-mono tracking-widest uppercase animate-pulse">
+          <p className="text-xs text-white font-mono tracking-widest uppercase animate-pulse">
             Carregando Módulos e Histórico...
           </p>
         </div>
