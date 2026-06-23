@@ -308,7 +308,7 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
                   placeholder="Ex: Minha Empresa Corp, RequisiJá"
                   value={requisition.companyName || ''}
                   onChange={(e) => handleMetaChange('companyName', e.target.value)}
-                  className="w-full px-2.5 py-2 text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
+                  className="w-full px-2.5 py-2 text-base md:text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
                 />
               </div>
 
@@ -321,7 +321,7 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
                   placeholder="Ex: Sistemas e Serviços de Obra"
                   value={requisition.companySub || ''}
                   onChange={(e) => handleMetaChange('companySub', e.target.value)}
-                  className="w-full px-2.5 py-2 text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
+                  className="w-full px-2.5 py-2 text-base md:text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
                 />
               </div>
 
@@ -334,7 +334,7 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
                   placeholder="Ex: 12.345.678/0001-90"
                   value={requisition.companyCnpj || ''}
                   onChange={(e) => handleMetaChange('companyCnpj', e.target.value)}
-                  className="w-full px-2.5 py-2 text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
+                  className="w-full px-2.5 py-2 text-base md:text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
                 />
               </div>
 
@@ -348,7 +348,7 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
                   placeholder="Ex: Faturar 30 dias via Boleto"
                   value={requisition.paymentTerms || ''}
                   onChange={(e) => handleMetaChange('paymentTerms', e.target.value)}
-                  className="w-full px-2.5 py-2 text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
+                  className="w-full px-2.5 py-2 text-base md:text-xs border border-slate-200 rounded-lg focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-800 bg-white"
                 />
               </div>
 
@@ -359,28 +359,27 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
         {/* Requisition Identification Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1">
-              <Landmark className="w-3.5 h-3.5 text-brand-blue-700" />
-              Quem Solicitou (Nome)
+          <div className="flex-1">
+            <label className="block text-xs font-bold text-brand-blue-900 mb-1">
+              Solicitante / Responsável
             </label>
             <input
               type="text"
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent text-sm text-slate-800 bg-slate-50/50 transition-all font-medium"
-              placeholder="Ex: Carlos Almoxarife, Engenheiro Márcio..."
+              className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent"
+              placeholder="Ex: Técnico André Souza"
               value={requisition.requesterName}
               onChange={(e) => handleMetaChange('requesterName', e.target.value)}
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-              Setor / Obra de Destino
+          <div className="flex-1">
+            <label className="block text-xs font-bold text-brand-blue-900 mb-1">
+              Setor / Destino
             </label>
             <input
               type="text"
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent text-sm text-slate-800 bg-slate-50/50 transition-all font-medium"
-              placeholder="Ex: Obra Premium Barra, Setor de Elétrica, Administrativo"
+              className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent"
+              placeholder="Ex: Instalação Condomínio X"
               value={requisition.sector}
               onChange={(e) => handleMetaChange('sector', e.target.value)}
             />
@@ -392,43 +391,28 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-100 pt-5">
           
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-              Nível de Urgência
+            <label className="block text-xs font-bold text-brand-blue-900 mb-1">
+              Urgência
             </label>
-            <div className="flex bg-slate-100 p-1 rounded-lg gap-1 border border-slate-200/50">
-              {(['Baixa', 'Média', 'Alta'] as const).map((level) => {
-                const isActive = requisition.urgency === level;
-                return (
-                  <button
-                    key={level}
-                    type="button"
-                    onClick={() => handleMetaChange('urgency', level)}
-                    className={`flex-1 text-center py-1.5 text-xs font-semibold rounded-md transition-all ${
-                      isActive 
-                        ? level === 'Alta' 
-                          ? 'bg-red-600 text-white shadow-sm'
-                          : level === 'Média'
-                          ? 'bg-amber-500 text-white shadow-sm'
-                          : 'bg-green-600 text-white shadow-sm'
-                        : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/50'
-                    }`}
-                  >
-                    {level}
-                  </button>
-                );
-              })}
-            </div>
+            <select
+              className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600 bg-white"
+              value={requisition.urgency}
+              onChange={(e) => handleMetaChange('urgency', e.target.value as Requisition['urgency'])}
+            >
+              <option value="Baixa">Baixa</option>
+              <option value="Média">Média</option>
+              <option value="Alta">Alta</option>
+            </select>
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1">
-              <Info className="w-3.5 h-3.5 text-brand-blue-700" />
-              Justificativa de Utilização
+            <label className="block text-xs font-bold text-brand-blue-900 mb-1">
+              Justificativa / Motivo da Solicitação
             </label>
             <input
               type="text"
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent text-sm text-slate-800 bg-slate-50/50 transition-all"
-              placeholder="Ex: Atender reparação do gerador elétrico da Obra X"
+              className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent"
+              placeholder="Ex: Reposição de estoque preventivo / Substituição de material danificado"
               value={requisition.justification}
               onChange={(e) => handleMetaChange('justification', e.target.value)}
             />
@@ -441,7 +425,7 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
           <div className="flex justify-between items-center mb-3">
             <h4 className="text-sm font-bold text-brand-blue-800 flex items-center gap-1.5 uppercase tracking-wide">
               <ShoppingBag className="w-4 h-4 text-brand-gold-500" />
-              Relação de Materiais Encontrados
+              Relação de Materiais
             </h4>
             
             <button
@@ -466,8 +450,8 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
               </div>
               <input
                 type="text"
-                className="block w-full pl-9 pr-8 py-2 border border-slate-250 rounded-lg text-xs text-slate-850 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-blue-600 bg-white"
-                placeholder="Busque por material comum do histórico da WA FORT (ex: câmera, dvr, cabo, sensor, etc.)..."
+                className="block w-full pl-9 pr-8 py-2 md:py-2.5 border border-slate-250 rounded-lg text-base md:text-xs text-slate-850 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-blue-600 bg-white"
+                placeholder="Busque por material comum..."
                 value={itemSearchQuery}
                 onChange={(e) => setItemSearchQuery(e.target.value)}
               />
@@ -524,108 +508,78 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
             )}
           </div>
 
-          {/* Table representing the list rows */}
-          <div className="overflow-x-auto rounded-lg border border-slate-200 max-h-96 overflow-y-auto">
-            <table className="w-full text-sm text-left">
-              <thead className="bg-slate-50 text-slate-500 text-xs font-bold uppercase border-b border-slate-250 sticky top-0">
-                <tr>
-                  <th scope="col" className="px-3 py-2.5 w-8 text-center">#</th>
-                  <th scope="col" className="px-3 py-2.5">Nome / Especificação do Material</th>
-                  <th scope="col" className="px-3 py-2.5 w-24">Quant.</th>
-                  <th scope="col" className="px-2 py-2.5 w-36">Preço Est. (Un.)</th>
-                  <th scope="col" className="px-3 py-2.5 w-12 text-center">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 bg-white">
-                {requisition.items.map((item, index) => (
-                  <tr key={item.id} className="hover:bg-slate-50/50">
-                    <td className="px-3 py-3 font-mono text-xs text-slate-400 text-center">{index + 1}</td>
-                    
-                    <td className="px-3 py-3 space-y-1">
-                      <input
-                        type="text"
-                        list="common-products"
-                        className="w-full px-2 py-1.5 text-sm border border-slate-200 rounded focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent"
-                        placeholder="Nome do produto ou material..."
-                        value={item.name}
-                        onChange={(e) => handleItemNameChangeWithLookup(item.id, e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        className="w-full px-2 py-1 text-xs border border-slate-100 italic rounded focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent text-slate-500"
-                        placeholder="Obs / marca de preferência (opcional)..."
-                        value={item.description}
-                        onChange={(e) => handleItemChange(item.id, 'description', e.target.value)}
-                      />
-                    </td>
-
-                    <td className="px-3 py-3">
-                      <input
-                        type="text"
-                        className="w-full px-2 py-1.5 text-sm font-semibold text-center border border-slate-200 rounded focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent bg-slate-50/20"
-                        placeholder="Ex: 5, 2 kg"
-                        value={item.quantity}
-                        onChange={(e) => handleItemChange(item.id, 'quantity', e.target.value)}
-                      />
-                    </td>
-
-                    <td className="px-2 py-3">
-                      <div className="relative">
-                        <span className="absolute left-2.5 top-2 text-xs font-bold text-slate-400">R$</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          className="w-full pl-7 pr-2 py-1.5 text-sm font-mono border border-slate-200 rounded focus:ring-1 focus:ring-brand-blue-600 focus:border-transparent"
-                          placeholder="0,00"
-                          value={item.estimatedUnitPrice || ''}
-                          onChange={(e) => handleItemChange(item.id, 'estimatedUnitPrice', e.target.value)}
-                        />
-                      </div>
-                    </td>
-
-                    <td className="px-3 py-3 text-center">
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveItem(item.id)}
-                        className="p-1 px-1.5 border border-red-100 bg-red-50 hover:bg-red-100 rounded text-red-600 transition-all cursor-pointer inline-flex items-center justify-center"
-                        title="Deletar este item"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          <div className="mt-2.5 flex items-center gap-1.5 text-xs text-slate-400">
-            <AlertCircle className="w-3.5 h-3.5 text-brand-blue-600 shrink-0" />
-            <span>Preencha o preço e a quantidade se quiser calcular automaticamente o valor aproximado da compra.</span>
+          {/* List display with card-based mobile view */}
+          <div className="flex flex-col gap-3">
+            {requisition.items.map((item, index) => (
+              <div key={item.id} className="border border-slate-200 rounded-xl p-4 bg-white shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Item #{index + 1}</span>
+                  <button type="button" onClick={() => handleRemoveItem(item.id)} className="text-red-500 hover:text-red-700">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-slate-500 mb-1">Nome do Item</label>
+                  <input
+                    type="text"
+                    value={item.name}
+                    onChange={(e) => handleItemNameChangeWithLookup(item.id, e.target.value)}
+                    className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600"
+                    placeholder="Descrição do material..."
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-slate-500 mb-1">Quant.</label>
+                    <input
+                      type="text"
+                      value={item.quantity}
+                      onChange={(e) => handleItemChange(item.id, 'quantity', e.target.value)}
+                      className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-slate-500 mb-1">Preço Un. (R$)</label>
+                    <input
+                      type="number"
+                      value={item.estimatedUnitPrice}
+                      onChange={(e) => handleItemChange(item.id, 'estimatedUnitPrice', e.target.value)}
+                      className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600"
+                    />
+                  </div>
+                </div>
+                <div>
+                   <label className="block text-[10px] uppercase font-bold text-slate-500 mb-1">Obs/Marca</label>
+                   <input
+                     type="text"
+                     value={item.description}
+                     onChange={(e) => handleItemChange(item.id, 'description', e.target.value)}
+                     className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600"
+                   />
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Datalist for inline table autocompletion */}
           <datalist id="common-products">
             {allUniqueItems.map((item, idx) => (
-              <option key={item.id || idx} value={item.name}>
-                {item.estimatedUnitPrice > 0 ? `R$ ${item.estimatedUnitPrice.toFixed(2)}` : ''}
-              </option>
+              <option key={item.id || idx} value={item.name} />
             ))}
           </datalist>
         </div>
 
         {/* Operational Observations */}
         <div className="border-t border-slate-100 pt-5">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-            Instruções Extras para Comprador ou Aprovação (Observações Gerais)
+          <label className="block text-xs font-bold text-brand-blue-900 mb-1">
+            Observações para o Aprovador (Opcional)
           </label>
           <textarea
-            className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent text-sm text-slate-800 bg-slate-50/50 min-h-[70px] transition-all"
-            placeholder="Ex: Pagar em 30 ddl. Solicitar faturamento no CNPJ da WA Fort Matriz..."
+            className="w-full px-3 py-2 text-base md:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue-600 focus:border-transparent"
+            rows={2}
+            placeholder="Ex: Entregar com urgência na obra do bloco B..."
             value={requisition.observationsToApprover}
             onChange={(e) => handleMetaChange('observationsToApprover', e.target.value)}
-          />
+          ></textarea>
         </div>
 
         {/* Attachments Section */}

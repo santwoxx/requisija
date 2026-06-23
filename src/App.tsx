@@ -618,8 +618,8 @@ Lista de Materiais de Segurança de Alta Performance:
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800">
       
       {/* Top Banner Message */}
-      <header className="h-20 bg-brand-blue-950 text-white border-b-4 border-brand-gold-500 flex items-center justify-between px-6 md:px-12 shadow-md shrink-0">
-        <div className="flex items-center gap-3">
+      <header className="py-4 md:h-20 bg-brand-blue-950 text-white border-b-4 border-brand-gold-500 flex flex-col sm:flex-row items-center justify-between px-4 md:px-12 shadow-md shrink-0 gap-4 sm:gap-0">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           <div className="w-12 h-12 bg-white flex items-center justify-center rounded-lg shadow-md p-0.5 border-2 border-brand-gold-500 overflow-hidden shrink-0">
             <img 
               src="https://i.ibb.co/C32GVNqh/logo.webp" 
@@ -659,7 +659,7 @@ Lista de Materiais de Segurança de Alta Performance:
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 flex flex-col gap-6 overflow-x-hidden">
         
         {/* Tab Bar for Multiple Requisitions */}
-        <div className="flex items-center gap-2 overflow-x-auto border-b border-slate-200" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex items-center gap-2 overflow-x-auto border-b border-slate-200 hide-scrollbar pb-1" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
           {openRequisitions.map(req => (
             <button
               key={req.id}
