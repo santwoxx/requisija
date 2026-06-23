@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Requisition, RequisitionItem, HistoryRecord, Attachment } from '../types';
 import { 
   Plus, 
@@ -90,7 +90,7 @@ export default function RequisitionForm({ requisition, onChange, history }: Requ
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     
-    Array.from(e.target.files).forEach((file) => {
+    Array.from(e.target.files).forEach((file: File) => {
       const maxSize = 5 * 1024 * 1024; // 5 MB limit per attachment
       if (file.size > maxSize) {
         alert(`O arquivo ${file.name} excede o limite de tamanho permitido de 5MB.`);

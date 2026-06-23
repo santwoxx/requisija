@@ -100,7 +100,21 @@ export default function App() {
     };
   };
 
-  const [currentRequisition, setCurrentRequisition] = useState<Requisition>(createEmptyRequisition);
+  const initialReq = createEmptyRequisition();
+  const [openRequisitions, setOpenRequisitions] = useState<Requisition[]>([initialReq]);
+  const [activeReqId, setActiveReqId] = useState<string>(initialReq.id);
+
+  const currentRequisition = openRequisitions.find(r => r.id === activeReqId) || openRequisitions[0];
+
+  const setCurrentRequisition = (newReq: Requisition | ((prev: Requisition) => Requisition)) => {
+    setOpenRequisitions(prev => prev.map(req => {
+      if (req.id === activeReqId) {
+        return typeof newReq === 'function' ? newReq(req) : newReq;
+      }
+      return req;
+    }));
+  };
+
   const [requisitionHistory, setRequisitionHistory] = useState<HistoryRecord[]>([]);
   const [historySearchQuery, setHistorySearchQuery] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -372,7 +386,14 @@ Lista de Materiais de Segurança de Alta Performance:
 
   // Load a historic record
   const loadHistoryItem = (record: HistoryRecord) => {
-    setCurrentRequisition(JSON.parse(JSON.stringify(record.data)));
+    const data = JSON.parse(JSON.stringify(record.data));
+    setOpenRequisitions(prev => {
+      if (!prev.find(r => r.id === data.id)) {
+        return [...prev, data];
+      }
+      return prev;
+    });
+    setActiveReqId(data.id);
     setActiveTab('form');
   };
 
@@ -571,10 +592,26 @@ Lista de Materiais de Segurança de Alta Performance:
 
   // Reset/Create New Requisition
   const handleCreateNewBlank = () => {
-    if (confirm("Deseja criar uma nova requisição em branco? Suas alterações não salvas serão perdidas.")) {
-      setCurrentRequisition(createEmptyRequisition());
-      setActiveTab('form');
-    }
+    const newReq = createEmptyRequisition();
+    setOpenRequisitions(prev => [...prev, newReq]);
+    setActiveReqId(newReq.id);
+    setActiveTab('form');
+  };
+
+  const closeTab = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpenRequisitions(prev => {
+      const updated = prev.filter(r => r.id !== id);
+      if (updated.length === 0) {
+        const newReq = createEmptyRequisition();
+        setActiveReqId(newReq.id);
+        return [newReq];
+      }
+      if (activeReqId === id) {
+        setActiveReqId(updated[updated.length - 1].id);
+      }
+      return updated;
+    });
   };
 
   return (
@@ -619,10 +656,45 @@ Lista de Materiais de Segurança de Alta Performance:
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-x-hidden">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 flex flex-col gap-6 overflow-x-hidden">
         
-        {/* Left Input Pane */}
-        <section className="lg:col-span-5 flex flex-col gap-5">
+        {/* Tab Bar for Multiple Requisitions */}
+        <div className="flex items-center gap-2 overflow-x-auto border-b border-slate-200" style={{ scrollbarWidth: 'none' }}>
+          {openRequisitions.map(req => (
+            <button
+              key={req.id}
+              onClick={() => { setActiveReqId(req.id); setActiveTab('form'); }}
+              className={`group flex items-center gap-2 px-4 py-2.5 rounded-t-lg border-t border-x text-xs font-bold whitespace-nowrap transition-all relative ${
+                activeReqId === req.id
+                  ? 'bg-white text-brand-blue-900 border-slate-200 shadow-sm z-10'
+                  : 'bg-slate-100 text-slate-500 border-slate-200/50 hover:bg-slate-50 hover:text-slate-700'
+              }`}
+              style={{ marginBottom: '-1px', borderBottomColor: activeReqId === req.id ? 'white' : 'inherit' }}
+            >
+              <FileText className={`w-3.5 h-3.5 ${activeReqId === req.id ? 'text-brand-gold-500' : 'text-slate-400'}`} />
+              <span>{req.requisitionNumber}</span>
+              {openRequisitions.length > 1 && (
+                <span
+                  onClick={(e) => closeTab(req.id, e)}
+                  className="p-0.5 hover:bg-red-100 hover:text-red-600 rounded-md transition-colors ml-1 opacity-0 group-hover:opacity-100"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </span>
+              )}
+            </button>
+          ))}
+          <button
+            onClick={handleCreateNewBlank}
+            className="flex items-center justify-center w-7 h-7 ml-1 rounded border border-slate-300 border-dashed text-slate-500 hover:bg-brand-blue-50 hover:text-brand-blue-700 hover:border-brand-blue-300 transition-all shrink-0 mb-1"
+            title="Nova Requisição"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+          {/* Left Input Pane */}
+          <section className="lg:col-span-5 flex flex-col gap-5">
           
           <div className="bg-white rounded-xl p-5 md:p-6 shadow-md border border-slate-200 flex flex-col gap-4">
             
@@ -1339,7 +1411,7 @@ Lista de Materiais de Segurança de Alta Performance:
           </div>
 
         </section>
-
+        </div>
       </main>
 
       {/* Hidden container only displayed when window.print() is active */}
